@@ -5,7 +5,7 @@ def main():
     st.title("Welcome to The Arrow!")
 
     st.sidebar.success("Select page above.")
-    st.sidebar.image('\images\logo.jpg', use_column_width='always')
+    st.sidebar.image('images/logo.jpg', use_column_width='always')
 
 if __name__ == "__main__":
     main()
