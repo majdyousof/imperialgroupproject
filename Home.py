@@ -6,7 +6,7 @@ def main():
 
     st.sidebar.success("Select page above.")
     st.sidebar.title("Welcome!")
-    st.sidebar.image('.\images\logo.jpg', use_column_width='always')
+    st.sidebar.image('\images\logo.jpg', use_column_width='always')
 
     # Add components to the sidebar
     st.sidebar.header("Options")

@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 st.sidebar.success("Select page above.")
-st.sidebar.image('.\images\logo.jpg', use_column_width='always')
+st.sidebar.image('\images\logo.jpg', use_column_width='always')
 st.title('Link-to-Link Quantitative Assessment :train:')
 
 st.markdown(""" This page of the dashboard aims to assess
