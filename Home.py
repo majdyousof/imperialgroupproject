@@ -1,6 +1,6 @@
 import streamlit as st
 
-def Main():
+def main():
     # Set the title and layout of the dashboard
     st.title("Welcome to The Arrow!")
 
@@ -16,4 +16,4 @@ def Main():
     st.write(f"You selected: {option}")
 
 if __name__ == "__main__":
-    Main()
+    main()
