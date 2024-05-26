@@ -2,7 +2,7 @@ import streamlit as st
 
 def main():
     # Set the title and layout of the dashboard
-    st.title('Under construction :hammer:')
+    st.title('Under construction! :hammer:')
     st.sidebar.success("Select page above.")
     st.sidebar.image('images/logo.jpg', use_column_width='always')
 
