@@ -28,7 +28,7 @@ uxbridge = pd.read_excel('train.xlsx',sheet_name='Uxbridge',header=None)
 staines = pd.read_excel('train.xlsx',sheet_name='Staines',header=None)
 
 # arrays needed for plotting
-year = np.arange(2025,2051)
+year = np.arange(2025,2101)
 poppercent = np.arange(1,101)
 
 
