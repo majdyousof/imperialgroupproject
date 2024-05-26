@@ -21,6 +21,10 @@ st.markdown("""
             - Heathrow **>** Woking
             """)
 
+st.markdown("""
+Toggle between link options using the **dropdown menu** in the **sidebar**.
+""")
+
 # data import
 iver = pd.read_excel('train.xlsx',sheet_name='Iver',header=None)
 woking = pd.read_excel('train.xlsx',sheet_name='Woking',header=None)
