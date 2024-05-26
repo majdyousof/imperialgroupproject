@@ -93,14 +93,14 @@ fig.add_hline(y=0,
 
 fig.update_layout(
                     xaxis_title='Year',
-                    yaxis_title='Earnings [£ million]')
+                    yaxis_title='Total Earnings [£ million]')
 
 fig2.update_layout(
     margin=dict(l=10, r=10, t=20, b=20),
     scene = dict(
                     xaxis_title='Percentage of Heathrow passengers using link [%]',
                     yaxis_title='Years',
-                    zaxis_title='Earnings [£ million]'))
+                    zaxis_title='Total Earnings [£ million]'))
 
 
 plotter = st.plotly_chart(fig)
