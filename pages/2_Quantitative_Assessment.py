@@ -69,7 +69,7 @@ elif linkoption == 'Heathrow-Staines':
     fig = px.line(x = year, 
                 y = staines[percentage_val-1],
                 title = f"{linkoption}")
-    fig.update_layout(yaxis_range=[staines[percentage_val-1].min().min(),staines[percentage_val-1].max().max()])
+    fig.update_layout(yaxis_range=[staines.min().min(),staines.max().max()])
 
     #3d plot
     fig2 = go.Figure(data=[go.Surface(z=staines,y=year,x=poppercent)])
