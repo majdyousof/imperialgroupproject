@@ -45,10 +45,10 @@ poppercent = np.arange(1,101)
 
 
 linkoption = st.sidebar.selectbox('*Select Link for comparison:*',
-                                    options=['Heathrow-Iver',
+                                    options=['Heathrow-Woking',
+                                             'Heathrow-Iver',
                                             'Heathrow-Uxbridge',
-                                            'Heathrow-Staines',
-                                            'Heathrow-Woking'])
+                                            'Heathrow-Staines',])
 
 percentage_val = st.select_slider("*Select percentage [%] of Heathrow passengers expected to use link:*",
                                   value = 50,
