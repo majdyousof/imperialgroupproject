@@ -168,7 +168,7 @@ fig2.update_layout(
 fig2.layout.scene1.camera.eye=dict(x=5, y=5, z=1)
 fig2.layout.scene2.camera.eye=dict(x=5, y=5, z=1)
 
-fig2.layout.scene1.aspectratio=dict(x=4.6, y=4.5, z=2)
+fig2.layout.scene1.aspectratio=dict(x=4.5, y=4.5, z=2)
 fig2.layout.scene2.aspectratio=dict(x=4.5, y=4.5, z=2)
 
 plotter = st.plotly_chart(fig)
