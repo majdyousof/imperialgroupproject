@@ -165,6 +165,7 @@ fig2.update_layout(
                     yaxis_title='Years',
                     zaxis_title='Total Earnings [£ million]'))
 
+
 fig2.layout.scene1.camera.eye=dict(x=0, y=15, z=2)
 fig2.layout.scene2.camera.eye=dict(x=0, y=15, z=2)
 
