@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+st.set_page_config(layout="wide")
 
 st.sidebar.success("Select page above.")
 st.sidebar.image('images/logo.jpg', use_column_width='always')
@@ -31,6 +34,11 @@ woking = pd.read_excel('train.xlsx',sheet_name='Woking',header=None)
 uxbridge = pd.read_excel('train.xlsx',sheet_name='Uxbridge',header=None)
 staines = pd.read_excel('train.xlsx',sheet_name='Staines',header=None)
 
+ivertr = pd.read_excel('train.xlsx',sheet_name='Ivertrolley',header=None)
+wokingtr = pd.read_excel('train.xlsx',sheet_name='Wokingtrolley',header=None)
+uxbridgetr = pd.read_excel('train.xlsx',sheet_name='Uxbridgetrolley',header=None)
+stainestr = pd.read_excel('train.xlsx',sheet_name='Stainestrolley',header=None)
+
 # arrays needed for plotting
 year = np.arange(2025,2101)
 poppercent = np.arange(1,101)
@@ -48,64 +56,106 @@ percentage_val = st.select_slider("*Select percentage [%] of Heathrow passengers
 
 if linkoption == 'Heathrow-Iver':
 
-    fig = px.line(x = year, 
-                y = iver[percentage_val-1],
-                title = f"{linkoption}")
-    fig.update_layout(yaxis_range=[iver.min().min(),iver.max().max()])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = year, y = iver[percentage_val-1], 
+                             mode='lines',
+                             name='Rail solution'))
+    
+    fig.add_trace(go.Scatter(x = year, y = ivertr[percentage_val-1],
+                             mode='lines',
+                             name='Trolley Bus solution'))
+    
+    fig.update_layout(yaxis_range=[min(iver[percentage_val-1].min().min(),ivertr[percentage_val-1].min().min()),
+                                   max(iver[percentage_val-1].max().max(),ivertr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = go.Figure(data=[go.Surface(z=iver,y=year,x=poppercent)])
-    fig2.update_layout(title=f"{linkoption} total surface plot", autosize=False,
-                  yaxis_range=[0,100])
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2.add_trace(go.Surface(z=iver,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=ivertr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+
     
 elif linkoption == 'Heathrow-Uxbridge':
-    fig = px.line(x = year, 
-                y = uxbridge[percentage_val-1],
-                title = f"{linkoption}")
-    fig.update_layout(yaxis_range=[uxbridge.min().min(),uxbridge.max().max()])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = year, y = uxbridge[percentage_val-1], 
+                             mode='lines',
+                             name='Rail solution'))
+    
+    fig.add_trace(go.Scatter(x = year, y = uxbridgetr[percentage_val-1],
+                             mode='lines',
+                             name='Trolley Bus solution'))
+    
+    fig.update_layout(yaxis_range=[min(uxbridge[percentage_val-1].min().min(),uxbridgetr[percentage_val-1].min().min()),
+                                       max(uxbridge[percentage_val-1].max().max(),uxbridgetr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = go.Figure(data=[go.Surface(z=uxbridge,y=year,x=poppercent)])
-    fig2.update_layout(title=f"{linkoption} total surface plot", autosize=False,
-                  margin=dict(l=65, r=50, b=65, t=90))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2.add_trace(go.Surface(z=uxbridge,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=uxbridgetr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+
     
 elif linkoption == 'Heathrow-Staines':
-    fig = px.line(x = year, 
-                y = staines[percentage_val-1],
-                title = f"{linkoption}")
-    fig.update_layout(yaxis_range=[staines.min().min(),staines.max().max()])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = year, y = staines[percentage_val-1], 
+                             mode='lines',
+                             name='Rail solution'))
+    
+    fig.add_trace(go.Scatter(x = year, y = stainestr[percentage_val-1],
+                             mode='lines',
+                             name='Trolley Bus solution'))
+    
+    fig.update_layout(yaxis_range=[min(staines[percentage_val-1].min().min(),stainestr[percentage_val-1].min().min()),
+                                   max(staines[percentage_val-1].max().max(),stainestr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = go.Figure(data=[go.Surface(z=staines,y=year,x=poppercent)])
-    fig2.update_layout(title=f"{linkoption} total surface plot", autosize=False,
-                  margin=dict(l=65, r=50, b=65, t=90))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2.add_trace(go.Surface(z=staines,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=stainestr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+
     
 elif linkoption == 'Heathrow-Woking':
-    fig = px.line(x = year, 
-                y = woking[percentage_val-1],
-                title = f"{linkoption}")
-    fig.update_layout(yaxis_range=[woking.min().min(),woking.max().max()])
-
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = year, y = woking[percentage_val-1], 
+                             mode='lines',
+                             name='Rail solution'))
+    
+    fig.add_trace(go.Scatter(x = year, y = wokingtr[percentage_val-1],
+                             mode='lines',
+                             name='Trolley Bus solution'))
+    
+    fig.update_layout(yaxis_range=[min(woking[percentage_val-1].min().min(),wokingtr[percentage_val-1].min().min()),
+                                   max(woking[percentage_val-1].max().max(),wokingtr[percentage_val-1].max().max())])
+    
     #3d plot
-    fig2 = go.Figure(data=[go.Surface(z=woking,y=year,x=poppercent)])
-    fig2.update_layout(title=f"{linkoption} total surface plot", autosize=False,
-                  margin=dict(l=65, r=50, b=65, t=90))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
+                         subplot_titles=('Rail solution','Trolley Bus solution'),
+                         horizontal_spacing=0.01,
+                         vertical_spacing=0.1)
+    fig2.add_trace(go.Surface(z=woking,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=wokingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+
 
 fig.add_hline(y=0,
               line_color = 'red',
               line_dash = 'dash')
 
-fig.update_layout(
-                    xaxis_title='Year',
-                    yaxis_title='Total Earnings [£ million]')
+fig.update_layout(xaxis_title='Year',
+                  yaxis_title='Total Earnings [£ million]',
+                  title = f"{linkoption} Mode comparison for {percentage_val}% share of total Heathrow passengers")
 
 fig2.update_layout(
     margin=dict(l=10, r=10, t=20, b=20),
-    scene = dict(
+    scene1 = dict(
+                    xaxis_title='Percentage of Heathrow passengers using link [%]',
+                    yaxis_title='Years',
+                    zaxis_title='Total Earnings [£ million]'),
+    scene2 = dict(
                     xaxis_title='Percentage of Heathrow passengers using link [%]',
                     yaxis_title='Years',
                     zaxis_title='Total Earnings [£ million]'))
 
+fig2.layout.scene1.camera.eye=dict(x=2.4, y=2.4, z=2.4)
+fig2.layout.scene2.camera.eye=dict(x=2.4, y=2.4, z=2.4)
 
 plotter = st.plotly_chart(fig)
-plotter2 = st.plotly_chart(fig2)
+st.markdown(f"**{linkoption} Surface plots for both modes**")
+plotter2 = st.plotly_chart(fig2,use_container_width=True)
