@@ -155,7 +155,7 @@ fig.update_layout(xaxis_title='Year',
                   ))
 
 fig2.update_layout(
-    margin=dict(l=10, r=10, t=20, b=10),
+    margin=dict(l=0, r=0, t=20, b=10),
     scene1 = dict(
                     xaxis_title='Heathrow passengers using link [%]',
                     yaxis_title='Years',
