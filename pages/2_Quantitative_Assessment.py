@@ -69,7 +69,10 @@ if linkoption == 'Heathrow-Iver':
                                    max(iver[percentage_val-1].max().max(),ivertr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
+                         subplot_titles=('Rail solution','Trolley Bus solution'),
+                         horizontal_spacing=0.01,
+                         vertical_spacing=0.1)
     fig2.add_trace(go.Surface(z=iver,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
     fig2.add_trace(go.Surface(z=ivertr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
 
@@ -88,7 +91,10 @@ elif linkoption == 'Heathrow-Uxbridge':
                                        max(uxbridge[percentage_val-1].max().max(),uxbridgetr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
+                         subplot_titles=('Rail solution','Trolley Bus solution'),
+                         horizontal_spacing=0.01,
+                         vertical_spacing=0.1)
     fig2.add_trace(go.Surface(z=uxbridge,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
     fig2.add_trace(go.Surface(z=uxbridgetr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
 
@@ -107,7 +113,10 @@ elif linkoption == 'Heathrow-Staines':
                                    max(staines[percentage_val-1].max().max(),stainestr[percentage_val-1].max().max())])
 
     #3d plot
-    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]], subplot_titles=('Rail solution','Trolley Bus solution'))
+    fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
+                         subplot_titles=('Rail solution','Trolley Bus solution'),
+                         horizontal_spacing=0.01,
+                         vertical_spacing=0.1)
     fig2.add_trace(go.Surface(z=staines,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
     fig2.add_trace(go.Surface(z=stainestr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
 
@@ -143,19 +152,22 @@ fig.update_layout(xaxis_title='Year',
                   title = f"{linkoption} Mode comparison for {percentage_val}% share of total Heathrow passengers")
 
 fig2.update_layout(
-    margin=dict(l=10, r=10, t=20, b=20),
+    margin=dict(l=10, r=0, t=20, b=10),
     scene1 = dict(
-                    xaxis_title='Percentage of Heathrow passengers using link [%]',
+                    xaxis_title='Heathrow passengers using link [%]',
                     yaxis_title='Years',
-                    zaxis_title='Total Earnings [£ million]'),
+                    zaxis_title='Total Earnings [£ million]',),
     scene2 = dict(
-                    xaxis_title='Percentage of Heathrow passengers using link [%]',
+                    xaxis_title='Heathrow passengers using link [%]',
                     yaxis_title='Years',
                     zaxis_title='Total Earnings [£ million]'))
 
-fig2.layout.scene1.camera.eye=dict(x=2.4, y=2.4, z=2.4)
-fig2.layout.scene2.camera.eye=dict(x=2.4, y=2.4, z=2.4)
+fig2.layout.scene1.camera.eye=dict(x=5, y=5, z=1)
+fig2.layout.scene2.camera.eye=dict(x=5, y=5, z=1)
+
+fig2.layout.scene1.aspectratio=dict(x=4.5, y=4.5, z=2)
+fig2.layout.scene2.aspectratio=dict(x=4.5, y=4.5, z=2)
 
 plotter = st.plotly_chart(fig)
-st.markdown(f"**{linkoption} Surface plots for both modes**")
+st.markdown(f"**{linkoption} Surface plots for both modes -** *feel free to rotate charts*")
 plotter2 = st.plotly_chart(fig2,use_container_width=True)
