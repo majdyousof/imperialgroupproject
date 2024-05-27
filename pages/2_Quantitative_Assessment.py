@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 st.sidebar.success("Select page above.")
 st.sidebar.image('images/logo.jpg', use_column_width='always')
@@ -165,11 +165,11 @@ fig2.update_layout(
                     yaxis_title='Years',
                     zaxis_title='Total Earnings [£ million]'))
 
-fig2.layout.scene1.camera.eye=dict(x=5, y=5, z=1)
-fig2.layout.scene2.camera.eye=dict(x=5, y=5, z=1)
+fig2.layout.scene1.camera.eye=dict(x=0, y=15, z=2)
+fig2.layout.scene2.camera.eye=dict(x=0, y=15, z=2)
 
-fig2.layout.scene1.aspectratio=dict(x=4.5, y=4.5, z=2)
-fig2.layout.scene2.aspectratio=dict(x=4.5, y=4.5, z=2)
+fig2.layout.scene1.aspectratio=dict(x=4, y=4, z=6)
+fig2.layout.scene2.aspectratio=dict(x=4, y=4, z=6)
 
 plotter = st.plotly_chart(fig)
 st.markdown(f"**{linkoption} Surface plots for both modes -** *feel free to rotate charts*")
