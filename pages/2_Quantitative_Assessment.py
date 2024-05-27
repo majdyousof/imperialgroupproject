@@ -51,7 +51,7 @@ linkoption = st.sidebar.selectbox('*Select Link for comparison:*',
                                             'Heathrow-Staines',])
 
 percentage_val = st.select_slider("*Select percentage [%] of Heathrow passengers expected to use link:*",
-                                  value = 50,
+                                  value = 20,
                                   options = poppercent)
 
 if linkoption == 'Heathrow-Iver':
