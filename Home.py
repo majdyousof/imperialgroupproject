@@ -58,6 +58,7 @@ def main():
                             name='Heathrow'
     )
 
+    fig.update_coloraxes(colorbar = dict(orientation = 'h', y = -0.15))
 
     st.plotly_chart(fig)
 
