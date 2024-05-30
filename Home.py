@@ -38,7 +38,8 @@ def main():
                             )
     
     fig.update_layout(title = f'{chosen} to Heathrow in 2019',
-                      height = 600)
+                      height = 600,
+                      legend = dict(y = 0, x = 0))
     
     fig.add_scattermapbox(lat=[51.470020],
                           lon =[-0.454295],
