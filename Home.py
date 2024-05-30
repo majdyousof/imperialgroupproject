@@ -60,7 +60,13 @@ def main():
 
     fig.update_coloraxes(colorbar = dict(orientation = 'h', y = -0.15))
 
+    barchart = px.bar(heatmap.sort_values('Total Annual Demand', ascending= False),
+                       x = 'Local Auth',
+                       y = ['Car Demand','Taxi Demand','Rail Demand', 'Other'],
+                       title = 'Total Annual trips and mode share per local authority INCLUDING London')
+
     st.plotly_chart(fig)
+    st.plotly_chart(barchart)
 
 if __name__ == "__main__":
     main()
