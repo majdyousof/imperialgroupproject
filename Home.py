@@ -37,9 +37,7 @@ def main():
                             color_continuous_scale=px.colors.cyclical.IceFire
                             )
     
-    fig.update_layout(title = f'{chosen} to Heathrow in 2019',
-                      height = 600,
-                      width = 1000)
+    fig.update_layout(title = f'{chosen} to Heathrow in 2019')
     
     fig.add_scattermapbox(lat=[51.470020],
                           lon =[-0.454295],
