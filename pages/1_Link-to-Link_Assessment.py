@@ -18,7 +18,7 @@ st.markdown(""" This page of the dashboard aims to assess
 
 st.markdown("""
             *The different links include:*
-            - Heathrow **>** Iver
+            - Heathrow **>** Reading
             - Heathrow **>** Uxbridge
             - Heathrow **>** Staines
             - Heathrow **>** Woking
@@ -28,53 +28,71 @@ st.markdown("""
 Toggle between link options using the **dropdown menu** in the **sidebar**.
 """)
 
-# data import
-iver = pd.read_excel('train.xlsx',sheet_name='Iver',header=None)
-woking = pd.read_excel('train.xlsx',sheet_name='Woking',header=None)
-uxbridge = pd.read_excel('train.xlsx',sheet_name='Uxbridge',header=None)
-staines = pd.read_excel('train.xlsx',sheet_name='Staines',header=None)
-
-ivertr = pd.read_excel('train.xlsx',sheet_name='Ivertrolley',header=None)
-wokingtr = pd.read_excel('train.xlsx',sheet_name='Wokingtrolley',header=None)
-uxbridgetr = pd.read_excel('train.xlsx',sheet_name='Uxbridgetrolley',header=None)
-stainestr = pd.read_excel('train.xlsx',sheet_name='Stainestrolley',header=None)
-
 # arrays needed for plotting
 year = np.arange(2025,2101)
 poppercent = np.arange(1,101)
+multipliers = np.arange(50,201,5)
 
 
-linkoption = st.sidebar.selectbox('*Select Link for comparison:*',
-                                    options=['Heathrow-Woking',
-                                             'Heathrow-Iver',
+linkoption = st.selectbox('*Select Link for comparison:*',
+                                    options=['Heathrow-Reading',
+                                             'Heathrow-Woking',
                                             'Heathrow-Uxbridge',
                                             'Heathrow-Staines',])
 
-percentage_val = st.select_slider("*Select percentage [%] of Heathrow passengers expected to use link:*",
+percentage_val = st.select_slider("*Select percentage [%] of total Heathrow passenger demand on link:*",
                                   value = 20,
                                   options = poppercent)
 
-if linkoption == 'Heathrow-Iver':
+multval = st.select_slider("*Select cost Multiplier [%]:*",
+                                  value = 100,
+                                  options = multipliers)
+
+val1 = str(int(multval/100))[0]
+#Data import
+
+if multval == 200 or multval == 100:
+    reading = pd.read_excel('data/readingtrain.xlsx',sheet_name=val1,header=None)
+    woking = pd.read_excel('data/wokingtrain.xlsx',sheet_name=val1,header=None)
+    uxbridge = pd.read_excel('data/uxbridgetrain.xlsx',sheet_name=val1,header=None)
+    staines = pd.read_excel('data/stainestrain.xlsx',sheet_name=val1,header=None)
+
+    readingtr = pd.read_excel('data/readingtrolley.xlsx',sheet_name=val1,header=None)
+    wokingtr = pd.read_excel('data/wokingtrolley.xlsx',sheet_name=val1,header=None)
+    uxbridgetr = pd.read_excel('data/uxbridgetrolley.xlsx',sheet_name=val1,header=None)
+    stainestr = pd.read_excel('data/stainestrolley.xlsx',sheet_name=val1,header=None)
+else:
+    reading = pd.read_excel('data/readingtrain.xlsx',sheet_name=str(multval/100),header=None)
+    woking = pd.read_excel('data/wokingtrain.xlsx',sheet_name=str(multval/100),header=None)
+    uxbridge = pd.read_excel('data/uxbridgetrain.xlsx',sheet_name=str(multval/100),header=None)
+    staines = pd.read_excel('data/stainestrain.xlsx',sheet_name=str(multval/100),header=None)
+
+    readingtr = pd.read_excel('data/readingtrolley.xlsx',sheet_name=str(multval/100),header=None)
+    wokingtr = pd.read_excel('data/wokingtrolley.xlsx',sheet_name=str(multval/100),header=None)
+    uxbridgetr = pd.read_excel('data/uxbridgetrolley.xlsx',sheet_name=str(multval/100),header=None)
+    stainestr = pd.read_excel('data/stainestrolley.xlsx',sheet_name=str(multval/100),header=None)
+
+if linkoption == 'Heathrow-Reading':
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x = year, y = iver[percentage_val-1], 
+    fig.add_trace(go.Scatter(x = year, y = reading[percentage_val-1], 
                              mode='lines',
                              name='Rail solution'))
     
-    fig.add_trace(go.Scatter(x = year, y = ivertr[percentage_val-1],
+    fig.add_trace(go.Scatter(x = year, y = readingtr[percentage_val-1],
                              mode='lines',
                              name='Trolley Bus solution'))
     
-    fig.update_layout(yaxis_range=[min(iver[percentage_val-1].min().min(),ivertr[percentage_val-1].min().min()),
-                                   max(iver[percentage_val-1].max().max(),ivertr[percentage_val-1].max().max())])
+    fig.update_layout(yaxis_range=[min(reading[percentage_val-1].min().min(),readingtr[percentage_val-1].min().min()),
+                                   max(reading[percentage_val-1].max().max(),readingtr[percentage_val-1].max().max())])
 
     #3d plot
     fig2 = make_subplots(rows=1,cols=2, specs=[[{'type': 'surface'}, {'type': 'surface'}]],
                          subplot_titles=('Rail solution','Trolley Bus solution'),
                          horizontal_spacing=0.01,
                          vertical_spacing=0.1)
-    fig2.add_trace(go.Surface(z=iver,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
-    fig2.add_trace(go.Surface(z=ivertr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+    fig2.add_trace(go.Surface(z=reading,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=readingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
 
     
 elif linkoption == 'Heathrow-Uxbridge':
