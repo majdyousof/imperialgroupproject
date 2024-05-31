@@ -8,7 +8,7 @@ from plotly.subplots import make_subplots
 #st.set_page_config(layout="wide")
 
 st.sidebar.success("Select page above.")
-st.sidebar.image('images/logo.jpg', use_column_width='always')
+#st.sidebar.image('images/logo.jpg', use_column_width='always')
 st.title('Link-to-Link Quantitative Assessment :train:')
 
 st.markdown(""" This page of the dashboard aims to assess
