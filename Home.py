@@ -18,7 +18,7 @@ def main():
     heatmap['Car Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Car']).round()
     heatmap['Rail Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Rail']).round()
     heatmap['Taxi Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Taxi']).round()
-    heatmap['Vehicle Demand'] = heatmap['Total Annual Demand'].multiply((heatmap['Mode Share Car']+heatmap['Mode Share Taxi'])).round()
+    heatmap['Vehicle Demand'] = heatmap['Taxi Demand']+heatmap['Car Demand']
     heatmap['Other'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Other']).round()
 
     chosen = st.selectbox(label = 'Choose mode:', options=['Total Annual Demand','Car Demand','Taxi Demand','Vehicle Demand','Rail Demand', 'Other'])
