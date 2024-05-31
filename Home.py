@@ -23,24 +23,37 @@ def main():
 
     chosen = st.selectbox(label = 'Choose mode:', options=['Total Annual Demand','Car Demand','Taxi Demand','Vehicle Demand','Rail Demand', 'Other'])
 
-    fig = px.scatter_mapbox(
-                            heatmap,
-                            lat="lat",
-                            lon="lng",
-                            size=f"{chosen}",
-                            hover_name="Local Auth",
-                            hover_data=f"{chosen}",
-                            size_max=50,
-                            zoom=5,
-                            mapbox_style="open-street-map",
-                            color=f"{chosen}",
-                            color_continuous_scale=px.colors.cyclical.IceFire,
-                            range_color=(0,6000000)
-                            )
-    
-    fig.update_layout(title = f'{chosen} to Heathrow in 2019',
-                      height = 600,
-                      legend = dict(y = 0, x = 0))
+    fig = go.Figure(data=go.Scattermapbox(
+        lat=heatmap['lat'],
+        lon=heatmap['lng'],
+        showlegend=False,
+        mode='markers',
+        marker=dict(
+            size=heatmap[chosen],
+            color=heatmap[chosen],
+            colorscale='Inferno',
+            sizemode='area',
+            sizeref= 0.5*heatmap['Total Annual Demand'].max()/50**2,
+            sizemin=1
+        ),
+        text=heatmap['Local Auth'],
+        hovertemplate='%{text}<br>' +
+                      'Demand: %{marker.size}<br>' +
+                      '<extra></extra>'
+    ))
+
+    fig.update_layout(
+        title=f'{chosen} to Heathrow in 2019',
+        mapbox=dict(
+            style='open-street-map',
+            zoom=7.5,
+            center=dict(lat=51.470020, lon=-0.454295)
+        ),
+        height=600,
+        legend=dict(y=0, x=0),
+        margin=dict(l=0, r=0, t=30, b=0),
+    )
+
     
     fig.add_scattermapbox(lat=[51.470020],
                           lon =[-0.454295],
