@@ -34,7 +34,8 @@ def main():
                             zoom=5,
                             mapbox_style="open-street-map",
                             color=f"{chosen}",
-                            color_continuous_scale=px.colors.cyclical.IceFire
+                            color_continuous_scale=px.colors.cyclical.IceFire,
+                            range_color=(0,6000000)
                             )
     
     fig.update_layout(title = f'{chosen} to Heathrow in 2019',
