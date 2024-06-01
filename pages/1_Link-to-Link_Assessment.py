@@ -34,7 +34,7 @@ poppercent = np.arange(1,101)
 multipliers = np.arange(50,201,5)
 
 
-linkoption = st.selectbox('*Select Link for comparison:*',
+linkoption = st.selectbox('*Select link for comparison:*',
                                     options=['Heathrow-Reading',
                                              'Heathrow-Woking',
                                             'Heathrow-Uxbridge',
@@ -44,7 +44,7 @@ percentage_val = st.select_slider("*Select percentage [%] of total Heathrow pass
                                   value = 20,
                                   options = poppercent)
 
-multval = st.select_slider("*Select cost Multiplier [%]:*",
+multval = st.select_slider("*Select cost multiplier [%]:*",
                                   value = 100,
                                   options = multipliers)
 
