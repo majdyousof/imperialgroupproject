@@ -86,7 +86,7 @@ def main():
     st.plotly_chart(fig)
 
 
-    chosen2 = st.selectbox(label = 'Choose mode to compare travel time to distance ratio:', options=['Transit Travel minutes per km','Car Travel minutes per km'])
+    chosen2 = st.selectbox(label = 'Choose mode to compare travel time to distance ratio:', options=['Car Travel minutes per km','Transit Travel minutes per km'])
 
     fig2 = go.Figure(data=go.Scattermapbox(
         lat=heatmap2['lat'],
