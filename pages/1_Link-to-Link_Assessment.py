@@ -14,7 +14,7 @@ st.title('Link-to-Link Quantitative Assessment :train:')
 st.markdown(""" This page of the dashboard aims to assess
             a select number of links to work out the year
             when the implementations of the different 
-            transportation modes break even. :chart:""")
+            transportation modes break even. Scroll down to view the qualitative assessment as well. :chart:""")
 
 st.markdown("""
             *The different links include:*
@@ -77,11 +77,13 @@ if linkoption == 'Heathrow-Reading':
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = year, y = reading[percentage_val-1], 
                              mode='lines',
-                             name='Rail solution'))
+                             name='Rail solution',
+                             marker = dict(color = 'purple')))
     
     fig.add_trace(go.Scatter(x = year, y = readingtr[percentage_val-1],
                              mode='lines',
-                             name='Trolley Bus solution'))
+                             name='Trolley Bus solution',
+                             marker = dict(color = 'darkorange')))
     
     fig.update_layout(yaxis_range=[min(reading[percentage_val-1].min().min(),readingtr[percentage_val-1].min().min()),
                                    max(reading[percentage_val-1].max().max(),readingtr[percentage_val-1].max().max())])
@@ -91,19 +93,21 @@ if linkoption == 'Heathrow-Reading':
                          subplot_titles=('Rail solution','Trolley Bus solution'),
                          horizontal_spacing=0.01,
                          vertical_spacing=0.1)
-    fig2.add_trace(go.Surface(z=reading,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
-    fig2.add_trace(go.Surface(z=readingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+    fig2.add_trace(go.Surface(z=reading,y=year,x=poppercent,name='Rail Solution', showscale=False, colorscale='inferno'), row=1,col=1)
+    fig2.add_trace(go.Surface(z=readingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False, colorscale='inferno'), row=1,col=2)
 
     
 elif linkoption == 'Heathrow-Uxbridge':
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = year, y = uxbridge[percentage_val-1], 
                              mode='lines',
-                             name='Rail solution'))
+                             name='Rail solution',
+                             marker = dict(color = 'purple')))
     
     fig.add_trace(go.Scatter(x = year, y = uxbridgetr[percentage_val-1],
                              mode='lines',
-                             name='Trolley Bus solution'))
+                             name='Trolley Bus solution',
+                             marker = dict(color = 'darkorange')))
     
     fig.update_layout(yaxis_range=[min(uxbridge[percentage_val-1].min().min(),uxbridgetr[percentage_val-1].min().min()),
                                        max(uxbridge[percentage_val-1].max().max(),uxbridgetr[percentage_val-1].max().max())])
@@ -113,19 +117,21 @@ elif linkoption == 'Heathrow-Uxbridge':
                          subplot_titles=('Rail solution','Trolley Bus solution'),
                          horizontal_spacing=0.01,
                          vertical_spacing=0.1)
-    fig2.add_trace(go.Surface(z=uxbridge,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
-    fig2.add_trace(go.Surface(z=uxbridgetr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+    fig2.add_trace(go.Surface(z=uxbridge,y=year,x=poppercent,name='Rail Solution', showscale=False, colorscale='inferno'), row=1,col=1)
+    fig2.add_trace(go.Surface(z=uxbridgetr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False, colorscale='inferno'), row=1,col=2)
 
     
 elif linkoption == 'Heathrow-Staines':
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = year, y = staines[percentage_val-1], 
                              mode='lines',
-                             name='Rail solution'))
+                             name='Rail solution',
+                             marker = dict(color = 'purple')))
     
     fig.add_trace(go.Scatter(x = year, y = stainestr[percentage_val-1],
                              mode='lines',
-                             name='Trolley Bus solution'))
+                             name='Trolley Bus solution',
+                             marker = dict(color = 'darkorange')))
     
     fig.update_layout(yaxis_range=[min(staines[percentage_val-1].min().min(),stainestr[percentage_val-1].min().min()),
                                    max(staines[percentage_val-1].max().max(),stainestr[percentage_val-1].max().max())])
@@ -135,19 +141,21 @@ elif linkoption == 'Heathrow-Staines':
                          subplot_titles=('Rail solution','Trolley Bus solution'),
                          horizontal_spacing=0.01,
                          vertical_spacing=0.1)
-    fig2.add_trace(go.Surface(z=staines,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
-    fig2.add_trace(go.Surface(z=stainestr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+    fig2.add_trace(go.Surface(z=staines,y=year,x=poppercent,name='Rail Solution', showscale=False, colorscale='inferno'), row=1,col=1)
+    fig2.add_trace(go.Surface(z=stainestr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False, colorscale='inferno'), row=1,col=2)
 
     
 elif linkoption == 'Heathrow-Woking':
     fig = go.Figure()
     fig.add_trace(go.Scatter(x = year, y = woking[percentage_val-1], 
                              mode='lines',
-                             name='Rail solution'))
+                             name='Rail solution',
+                             marker = dict(color = 'purple')))
     
     fig.add_trace(go.Scatter(x = year, y = wokingtr[percentage_val-1],
                              mode='lines',
-                             name='Trolley Bus solution'))
+                             name='Trolley Bus solution',
+                             marker = dict(color = 'darkorange')))
     
     fig.update_layout(yaxis_range=[min(woking[percentage_val-1].min().min(),wokingtr[percentage_val-1].min().min()),
                                    max(woking[percentage_val-1].max().max(),wokingtr[percentage_val-1].max().max())])
@@ -157,8 +165,8 @@ elif linkoption == 'Heathrow-Woking':
                          subplot_titles=('Rail solution','Trolley Bus solution'),
                          horizontal_spacing=0.01,
                          vertical_spacing=0.1)
-    fig2.add_trace(go.Surface(z=woking,y=year,x=poppercent,name='Rail Solution', showscale=False), row=1,col=1)
-    fig2.add_trace(go.Surface(z=wokingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False), row=1,col=2)
+    fig2.add_trace(go.Surface(z=woking,y=year,x=poppercent,name='Rail Solution', colorscale='inferno', showscale=False), row=1,col=1)
+    fig2.add_trace(go.Surface(z=wokingtr,y=year,x=poppercent,name='Trolley Bus Solution', showscale=False, colorscale='Inferno'), row=1,col=2)
 
 
 fig.add_hline(y=0,
@@ -177,7 +185,7 @@ fig2.update_layout(
     scene1 = dict(
                     xaxis_title='Heathrow passengers using link [%]',
                     yaxis_title='Years',
-                    zaxis_title='Total Earnings [£ million]',),
+                    zaxis_title='Total Earnings [£ million]'),
     scene2 = dict(
                     xaxis_title='Heathrow passengers using link [%]',
                     yaxis_title='Years',
@@ -193,3 +201,53 @@ fig2.layout.scene2.aspectratio=dict(x=4, y=4, z=6)
 plotter = st.plotly_chart(fig)
 st.markdown(f"**{linkoption} Surface plots for both modes -** *feel free to rotate charts*")
 plotter2 = st.plotly_chart(fig2,use_container_width=True)
+
+# qualitative###############################################
+
+st.title('Link-to-Link Qualitative Assessment :briefcase:')
+
+railscore_reading = 3.8
+railscore_woking = 3.78
+railscore_staines = 3.2
+railscore_uxbridge = 3.37
+
+trolleyscore_reading = 3.3
+trolleyscore_woking = 3.7
+trolleyscore_staines = 3.78
+trolleyscore_uxbridge = 3.29
+
+railscore_access = 3.58
+railscore_comfort = 3.4975
+railscore_safety = 3.33
+railscore_deliver = 3.5
+
+trolleyscore_access = 3.165
+trolleyscore_comfort = 2.83
+trolleyscore_safety = 3.47
+trolleyscore_deliver = 2.9
+
+barplot = go.Figure(data=[go.Bar(name = 'Rail solution',
+                           y=['Reading','Uxbridge','Staines','Woking'],
+                           x = [railscore_reading,railscore_uxbridge,railscore_staines,railscore_woking],
+                           orientation='h',
+                           marker = dict(color = 'purple')),
+                           go.Bar(name='Trolley Bus solution',
+                                  y=['Reading','Uxbridge','Staines','Woking'],
+                                  x = [trolleyscore_reading,trolleyscore_uxbridge,trolleyscore_staines,trolleyscore_woking],
+                                  orientation='h',
+                                  marker = dict(color = 'darkorange'))])
+
+st.plotly_chart(barplot)
+
+barplot2 = go.Figure(data=[go.Bar(name = 'Rail solution',
+                           y=['Accessibility','Comfort','Safety','Deliverability'],
+                           x = [railscore_access,railscore_comfort,railscore_safety,railscore_deliver],
+                           orientation='h',
+                           marker = dict(color = 'purple')),
+                           go.Bar(name='Trolley Bus solution',
+                                  y=['Accessibility','Comfort','Safety','Deliverability'],
+                                  x = [trolleyscore_access,trolleyscore_comfort,trolleyscore_safety,trolleyscore_deliver],
+                                  orientation='h',
+                                  marker = dict(color = 'darkorange'))])
+
+st.plotly_chart(barplot2)
