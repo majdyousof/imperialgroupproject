@@ -204,7 +204,7 @@ plotter2 = st.plotly_chart(fig2,use_container_width=True)
 
 # qualitative###############################################
 
-st.title('Link-to-Link Qualitative Assessment :briefcase:')
+st.title('Qualitative Assessment :briefcase:')
 
 railscore_reading = 3.8
 railscore_woking = 3.78
@@ -237,6 +237,8 @@ barplot = go.Figure(data=[go.Bar(name = 'Rail solution',
                                   orientation='h',
                                   marker = dict(color = 'darkorange'))])
 
+barplot.update_layout(title = 'Average Qualitative Assessment Scores per Link')
+
 st.plotly_chart(barplot)
 
 barplot2 = go.Figure(data=[go.Bar(name = 'Rail solution',
@@ -249,5 +251,7 @@ barplot2 = go.Figure(data=[go.Bar(name = 'Rail solution',
                                   x = [trolleyscore_access,trolleyscore_comfort,trolleyscore_safety,trolleyscore_deliver],
                                   orientation='h',
                                   marker = dict(color = 'darkorange'))])
+
+barplot2.update_layout(title = 'Average Qualitative Assessment Scores per Social and Feasibility Factor')
 
 st.plotly_chart(barplot2)
