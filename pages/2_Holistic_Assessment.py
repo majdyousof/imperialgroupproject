@@ -6,7 +6,13 @@ import plotly.graph_objects as go
 
 st.sidebar.success("Select page above.")
 #st.sidebar.image('images/logo.jpg', use_column_width=True)
-st.title('Under construction! ::')
+st.title('Holistic Assessment :recycle:')
+st.markdown("""This section of the dashboard aims to provide insight into how the changes proposed may impact the current network through:""")
+st.markdown("""
+            - Generalised Cost of Travel :dollar:
+            - Travel Time Saved :watch:
+            - Mode Shift :car: **>** :train: """)
+
 
 heatmap = pd.read_excel('New_Routes_2024.xlsx').dropna()
 heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]
