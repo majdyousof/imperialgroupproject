@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -12,6 +11,8 @@ def main():
     #st.sidebar.image('images/logo.jpg', use_column_width='always')
 
     heatmap = pd.read_excel('heathrowflow.xlsx')
+    heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]
+    heatmap2 = heatmap[~heatmap['Local Auth'].eq('Westminster')]
 
     heatmap['Mode Share Other'] = 1-(heatmap['Mode Share Car']+heatmap['Mode Share Taxi']+heatmap['Mode Share Rail'])
 
@@ -40,7 +41,7 @@ def main():
             cmin = 0,
             cmax = heatmap['Total Annual Demand'].max(),
             sizemode='area',
-            sizeref= 0.5*heatmap['Total Annual Demand'].max()/50**2,
+            sizeref= 0.4*heatmap['Total Annual Demand'].max()/50**2,
             sizemin=1
         ),
         text=heatmap['Local Auth'],
@@ -100,9 +101,9 @@ def main():
             showscale = True,
             
             cmin = 0,
-            cmax = max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max())-15,
+            cmax = max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max()),
             sizemode='area',
-            sizeref= max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max())/50**2,
+            sizeref= max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max())/30**2,
             sizemin=1
         ),
         text=heatmap2['Local Auth'],
