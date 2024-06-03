@@ -237,7 +237,7 @@ barplot = go.Figure(data=[go.Bar(name = 'Rail solution',
                                   orientation='h',
                                   marker = dict(color = 'darkorange'))])
 
-barplot.update_layout(title = 'Average Qualitative Assessment Scores per Link', xaxis_range = [1,4])
+barplot.update_layout(title = 'Average Qualitative Assessment Scores per Link')
 
 st.plotly_chart(barplot)
 
@@ -252,6 +252,6 @@ barplot2 = go.Figure(data=[go.Bar(name = 'Rail solution',
                                   orientation='h',
                                   marker = dict(color = 'darkorange'))])
 
-barplot2.update_layout(title = 'Average Qualitative Assessment Scores per Social and Feasibility Factor', xaxis_range = [1,4])
+barplot2.update_layout(title = 'Average Qualitative Assessment Scores per Social and Feasibility Factor')
 
 st.plotly_chart(barplot2)
