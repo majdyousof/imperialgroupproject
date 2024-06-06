@@ -73,7 +73,7 @@ fig.add_scattermapbox(lat=[51.470020],
     )
 
 
-st.plotly_chart(fig)
+
 
 #time saved
 
@@ -129,5 +129,5 @@ fig2.add_scattermapbox(lat=[51.470020],
                             name='Heathrow'
     )
 
-
 st.plotly_chart(fig2)
+st.plotly_chart(fig)
