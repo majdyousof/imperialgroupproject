@@ -1,7 +1,5 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -11,7 +9,7 @@ def main():
     st.sidebar.success("Select page above.")
     #st.sidebar.image('images/logo.jpg', use_column_width='always')
 
-    heatmap = pd.read_excel('heathrowflow.xlsx')
+    heatmap = pd.read_excel('data/heathrowflow.xlsx')
     heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]
     heatmap2 = heatmap[~heatmap['Local Auth'].eq('Westminster')]
 

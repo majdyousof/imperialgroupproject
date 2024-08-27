@@ -1,12 +1,9 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-
-import plotly.express as px
 import plotly.graph_objects as go
 
 def load_data():
-    heatmap = pd.read_excel('New_Routes_2024.xlsx').dropna()
+    heatmap = pd.read_excel('data/New_Routes_2024.xlsx').dropna()
     heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]
     heatmap = heatmap[~heatmap['Local Auth'].eq('Angus')]
     return heatmap
