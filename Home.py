@@ -4,10 +4,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 def main():
-    # Set the title and layout of the dashboard
+    st.set_page_config(layout="wide")
     st.title('Heathrow Trips: A review :book:')
     st.sidebar.success("Select page above.")
-    #st.sidebar.image('images/logo.jpg', use_column_width='always')
 
     heatmap = pd.read_excel('data/heathrowflow.xlsx')
     heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]

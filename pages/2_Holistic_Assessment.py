@@ -117,6 +117,7 @@ def create_time_saved_map(heatmap):
     return fig
 
 def main():
+    st.set_page_config(layout="wide")
     st.sidebar.success("Select page above.")
     st.title('Holistic Assessment :recycle:')
     st.markdown("""This section of the dashboard aims to provide insight into how the changes proposed may impact the current network through:""")
