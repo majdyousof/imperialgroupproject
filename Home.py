@@ -1,151 +1,188 @@
-import streamlit as st
-import pandas as pd
+"""Explore the historical Heathrow surface-access demand dataset."""
+
+import math
+
 import plotly.express as px
-import plotly.graph_objects as go
+import streamlit as st
 
-def main():
-    st.set_page_config(layout="wide")
-    st.title('Heathrow Trips: A review :book:')
-    st.sidebar.success("Select page above.")
+from heathrow.data import LONDON_AUTHORITIES, MODES, load_demand, rail_share
+from heathrow.ui import chart, download, location_map, page
 
-    heatmap = pd.read_excel('data/heathrowflow.xlsx')
-    heatmap = heatmap[~heatmap['Local Auth'].eq('South Holland')]
-    heatmap2 = heatmap[~heatmap['Local Auth'].eq('Westminster')]
 
-    heatmap['Mode Share Other'] = 1-(heatmap['Mode Share Car']+heatmap['Mode Share Taxi']+heatmap['Mode Share Rail'])
-
-    heatmap['Car Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Car']).round()
-    heatmap['Rail Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Rail']).round()
-    heatmap['Taxi Demand'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Taxi']).round()
-    heatmap['Vehicle Demand'] = heatmap['Taxi Demand']+heatmap['Car Demand']
-    heatmap['Other'] = heatmap['Total Annual Demand'].multiply(heatmap['Mode Share Other']).round()
-
-    heatmap['Car Travel minutes per km'] = (1/60)*heatmap['Car Time Taken [s]'].div(heatmap['Car Distance [m]']/1000)
-    heatmap['Transit Travel minutes per km'] = (1/60)*heatmap['Transit Time Taken [s]'].div(heatmap['Transit Distance [m]']/1000)
-    heatmap2 = heatmap.dropna()
-
-    chosen = st.selectbox(label = 'Choose mode to compare demand:', options=['Total Annual Demand','Car Demand','Taxi Demand','Vehicle Demand','Rail Demand', 'Other'])
-
-    fig = go.Figure(data=go.Scattermapbox(
-        lat=heatmap['lat'],
-        lon=heatmap['lng'],
-        showlegend=False,
-        mode='markers',
-        marker=dict(
-            size=heatmap[chosen],
-            color=heatmap[chosen],
-            colorscale='Inferno',
-            showscale = True,
-            cmin = 0,
-            cmax = heatmap['Total Annual Demand'].max(),
-            sizemode='area',
-            sizeref= 0.4*heatmap['Total Annual Demand'].max()/50**2,
-            sizemin=1
+def main() -> None:
+    page("Heathrow Trips: A review")
+    st.caption("A 3 week design project conducted at Imperial College London")
+    st.subheader("Current Surface Access at Heathrow")
+    st.write(
+        "It is expected that the proposed expansion of Heathrow would increase demand for international travel substantially, "
+        "which will likely increase the congestion of the surrounding road networks, decreasing both the efficiency of transport and the air quality of the area (which is already affected by the extensive flights as Heathrow is one of the Largest International airports in the world). "
+        "The aim of this project is to improve surface access to address this, particularly from the south "
+        "and south-west of England, and to encourage a mode shift from private vehicles to public transport. This page explores the current demand and mode shares for travel to Heathrow."
+    )
+    st.write(
+        "The starting point is where passengers travel from and how they reach Heathrow. "
+        "The figures below use 2019 demand data supplied by ARUP and archived Google "
+        "journey estimates."
+    )
+    with st.expander("Data sources"):
+        st.markdown(
+            "- **Passenger demand and mode shares:** 2019 origin–destination data "
+            "supplied by ARUP for the coursework. The original survey publication "
+            "has not been identified.\n"
+            "- **Journey times and distances:** archived Google Distance Matrix "
+            "estimates collected during the project. These are separate from the "
+            "2019 demand observations. "
+            "[Google's service documentation](https://developers.google.com/maps/"
+            "documentation/distance-matrix/distance-matrix) explains the journey estimates."
+        )
+    with st.expander("Passenger travel"):
+        st.write(
+            "Ease of travel with luggage, quick journey time, value for money and "
+            "flexibility are key factors in passengers' choice of transport, and directly contribute to the utility of a journey. Improving "
+            "surface access therefore involves both the journey itself and how easily "
+            "passengers can use the service."
+        )
+    data = load_demand()
+    modes = MODES
+    include_london = st.sidebar.toggle(
+        "Include London",
+        value=True,
+        help=(
+            "Applies to all Home maps, totals, charts and the data download. "
+            "London includes all 32 boroughs and the City of London."
         ),
-        text=heatmap['Local Auth'],
-        hovertemplate='%{text}<br>' +
-                      'Demand: %{marker.size}<br>' +
-                      '<extra></extra>',
-    ))
+    )
+    selected = st.multiselect(
+        "Focus on local authorities",
+        sorted(data["Local Auth"].dropna().unique()),
+        help="Leave empty to show all available authorities.",
+    )
+    if selected:
+        data = data[data["Local Auth"].isin(selected)]
+    if not include_london:
+        data = data[~data["Local Auth"].isin(LONDON_AUTHORITIES)]
+    if data.empty:
+        st.info(
+            "No authorities match these filters. Adjust the authority selection or include London."
+        )
+    total = data["Total Annual Demand"].sum(min_count=1)
+    a, b, c = st.columns(3)
+    a.metric("Annual journeys in selection", f"{total:,.0f}" if math.isfinite(total) else "—")
+    b.metric("Local authorities", f"{len(data):,}")
+    share = rail_share(data)
+    c.metric("Rail share of journeys", f"{share:.1%}" if share is not None else "—")
+    missing = int(data["Mode Share Rail"].isna().sum())
+    if missing:
+        st.info(
+            f"{missing} authorities lack a valid modal split and are excluded from the rail-share calculation."
+        )
+    demand, times, table = st.tabs(["Journey demand", "Travel efficiency", "Explore data"])
+    with demand:
+        st.write(
+            "The 2019 demand data shows high vehicle demand in London and in some areas "
+            "to the west and south-west. Outside London, rail demand is much lower than "
+            "vehicle demand. Passengers may travel through London to reach Heathrow by "
+            "public transport, or travel directly by car or taxi."
+        )
+        st.info(
+            "This initial analysis takes into account only first-order origin-destination flows "
+            "to Heathrow, which considers some journeys which are done via London, "
+            "as the passenger's original starting point. In the UK, it is often the case that passengers, "
+            "even if they live closer to Heathrow, will use London as a hub to reach the airport. This is particularly true for passengers from the south-west of England, "
+            "where public transport connections to Heathrow are limited. This is a limitation of the dataset used which is acknowledged in the analysis"
+            " and accepted due to time constraints."
+        )
+        chosen = st.selectbox(
+            "Choose mode to compare demand:",
+            [
+                "Total Annual Demand",
+                "Car Demand",
+                "Taxi Demand",
+                "Car + taxi demand",
+                "Rail Demand",
+                "Other Demand",
+            ],
+            format_func=lambda value: {
+                "Other Demand": "Other",
+                "Car + taxi demand": "Vehicle Demand",
+            }.get(value, value),
+        )
+        if chosen is not None:
+            fig = location_map(data, chosen, "journeys/year")
+            label = {"Other Demand": "Other", "Car + taxi demand": "Vehicle Demand"}.get(
+                chosen, chosen
+            )
+            fig.update_layout(title=f"{label} to Heathrow in 2019 (Source: ARUP)")
+            chart(fig)
+        st.subheader("Total Annual trips and mode share per local authority")
+        selected_modes = []
+        for mode, column in zip(modes, st.columns(len(modes))):
+            if column.checkbox(mode, value=True, key=f"demand_{mode.lower()}"):
+                selected_modes.append(mode)
+        if not selected_modes:
+            st.info("Select at least one transport mode to show the demand chart.")
+        else:
+            selected_columns = [f"{mode} Demand" for mode in selected_modes]
+            ranked = data.dropna(subset=selected_columns).copy()
+            ranked["Selected-mode demand"] = ranked[selected_columns].sum(axis=1)
+            top = (
+                ranked.sort_values(["Selected-mode demand", "Local Auth"], ascending=[False, True])
+                .head(15)
+                .iloc[::-1]
+            )
+            st.caption(
+                f"Up to 15 authorities ranked by combined annual journeys for "
+                f"{', '.join(selected_modes)}, "
+                + ("including London." if include_london else "excluding London.")
+            )
+            if top.empty:
+                st.info(
+                    "No authorities with valid demand and mode shares match this chart selection."
+                )
+            else:
+                fig = px.bar(
+                    top,
+                    y="Local Auth",
+                    x=selected_columns,
+                    orientation="h",
+                    labels={
+                        "value": "Annual journeys (selected modes)",
+                        "variable": "Mode",
+                        "Local Auth": "Local authority",
+                    },
+                    title="Annual journeys by local authority",
+                )
+                fig.update_layout(height=500, legend_title_text="Mode")
+                chart(fig)
+    with times:
+        st.write(
+            "The journey estimates show that public transport travel time per kilometre "
+            "is on average higher than for cars, particularly in the south-western area "
+            "near London. Even areas close to Heathrow can have a much longer journey "
+            "by public transport. Lower values on this map mean less time travelling "
+            "per kilometre."
+        )
+        chosen = st.radio(
+            "Choose mode to compare travel time to distance ratio:",
+            ["Car minutes per km", "Transit minutes per km"],
+            format_func=lambda value: value.replace(" minutes per km", " Travel minutes per km"),
+            horizontal=True,
+        )
+        if chosen is not None:
+            fig = location_map(data, chosen, "min/km")
+            label = chosen.replace(" minutes per km", " Travel minutes per km")
+            fig.update_layout(title=f"{label} to Heathrow (Source: Google Distance Matrix API)")
+            chart(fig)
+    with table:
+        st.dataframe(data, use_container_width=True, hide_index=True)
+        download(data, "heathrow-demand.csv")
 
-    fig.update_layout(
-        title=f'{chosen} to Heathrow in 2019 (Source: ARUP)',
-        mapbox=dict(
-            style='open-street-map',
-            zoom=7.5,
-            center=dict(lat=51.470020, lon=-0.454295)
-        ),
-        height=400,  # Adjust the height for mobile devices
-        legend=dict(y=0, x=0),
-        margin=dict(l=0, r=0, t=30, b=0),
+    st.write(
+        "This baseline assessment identifies Reading, Woking, Uxbridge (Hillingdon) and Staines (Spelthorne) as good candidate "
+        "links to investigate. This is due to their strategic location and potential for integration "
+        "with the proposed transport infrastructure, as well as their high demand for travel to Heathrow, with high vehicle usage mode shares."
     )
 
-    fig.add_scattermapbox(lat=[51.470020],
-                          lon =[-0.454295],
-                          marker=go.scattermapbox.Marker(
-                                                        size=25,
-                                                        color='black'),
-                            name='',
-                            showlegend=False
-    )
-
-    fig.add_scattermapbox(lat=[51.470020],
-                          lon =[-0.454295],
-                          marker=go.scattermapbox.Marker(
-                                                        size=18,
-                                                        color='pink'),
-                            name='Heathrow'
-    )
-
-    fig.update_coloraxes(colorbar = dict(orientation = 'h', y = -0.15,))
-
-    st.plotly_chart(fig, use_container_width=True)  # Use container width for mobile devices
-
-
-    chosen2 = st.selectbox(label = 'Choose mode to compare travel time to distance ratio:', options=['Car Travel minutes per km','Transit Travel minutes per km'])
-
-    fig2 = go.Figure(data=go.Scattermapbox(
-        lat=heatmap2['lat'],
-        lon=heatmap2['lng'],
-        showlegend=False,
-        mode='markers',
-        marker=dict(
-            size=heatmap2[chosen2],
-            color=heatmap2[chosen2],
-            colorscale='Inferno',
-            showscale = True,
-            cmin = 0,
-            cmax = max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max()),
-            sizemode='area',
-            sizeref= max(heatmap2['Transit Travel minutes per km'].max(),heatmap2['Car Travel minutes per km'].max())/30**2,
-            sizemin=1
-        ),
-        text=heatmap2['Local Auth'],
-        hovertemplate='%{text}<br>' +
-                      'Minutes/Kilometer ratio: %{marker.size}<br>' +
-                      '<extra></extra>',
-    ))
-
-    fig2.update_layout(
-        title=f'{chosen2} to Heathrow (Source: Google Distance Matrix API)',
-        mapbox=dict(
-            style='open-street-map',
-            zoom=7.5,
-            center=dict(lat=51.470020, lon=-0.454295)
-        ),
-        height=400,  # Adjust the height for mobile devices
-        legend=dict(y=0, x=0),
-        margin=dict(l=0, r=0, t=30, b=0),
-    )
-
-    fig2.add_scattermapbox(lat=[51.470020],
-                          lon =[-0.454295],
-                          marker=go.scattermapbox.Marker(
-                                                        size=25,
-                                                        color='black'),
-                            name='',
-                            showlegend=False
-    )
-
-    fig2.add_scattermapbox(lat=[51.470020],
-                          lon =[-0.454295],
-                          marker=go.scattermapbox.Marker(
-                                                        size=18,
-                                                        color='pink'),
-                            name='Heathrow'
-    )
-
-    fig2.update_coloraxes(colorbar = dict(orientation = 'h', y = -0.15))
-
-    st.plotly_chart(fig2, use_container_width=True)  # Use container width for mobile devices
-
-
-    barchart = px.bar(heatmap.sort_values('Total Annual Demand', ascending= False),
-                    x = 'Local Auth',
-                    y = ['Car Demand','Taxi Demand','Rail Demand', 'Other'],
-                    title = 'Total Annual trips and mode share per local authority INCLUDING London')
-
-    st.plotly_chart(barchart, use_container_width=True)  # Use container width for mobile devices
 
 if __name__ == "__main__":
     main()

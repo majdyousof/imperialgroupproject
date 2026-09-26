@@ -1,0 +1,18 @@
+{
+  "runtimeVersion": "1.8.1",
+  "pyodideUrl": "https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.mjs",
+  "entrypoint": "Home.py",
+  "prebuiltPackageNames": [
+    "numpy",
+    "pandas",
+    "pydantic"
+  ],
+  "requirements": [
+    "plotly==5.22.0"
+  ],
+  "streamlitConfig": {
+    "theme.base": "dark",
+    "client.toolbarMode": "viewer",
+    "browser.gatherUsageStats": false
+  }
+}

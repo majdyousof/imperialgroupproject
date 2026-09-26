@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heathrow Surface Access</title>
+  </head>
+  <body>
+    <p>Returning to the Heathrow dashboard…</p>
+    <script>
+      const basePath = __BASE_PATH__;
+      if (location.pathname.startsWith(basePath)) {
+        const route = location.pathname + location.search + location.hash;
+        location.replace(basePath + "?__route=" + encodeURIComponent(route));
+      }
+    </script>
+  </body>
+</html>
