@@ -4,12 +4,13 @@ A coursework dashboard deployed to GitHub Pages using Stlite.
 
 ## Deploy to GitHub Pages
 
-1. In this repository, open **Settings → Pages** and select **GitHub Actions** as the source.
-2. Leave **Custom domain** empty to inherit the domain configured on `majdyousof.github.io`.
-3. Commit the changes and push or merge them into the default branch.
-4. In **Actions**, wait for the **GitHub Pages** workflow to finish.
+1. In **Settings → General**, set the repository name to `heathrow-surface-access`. The Pages URL path follows the repository name.
+2. In this repository, open **Settings → Pages** and select **GitHub Actions** as the source.
+3. Leave **Custom domain** empty to inherit the domain configured on `majdyousof.github.io`.
+4. Commit the changes and push or merge them into the default branch.
+5. In **Actions**, wait for the **GitHub Pages** workflow to finish.
 
-Expected address: **https://www.majdyousof.com/imperialgroupproject/**
+Expected address: **https://www.majdyousof.com/heathrow-surface-access/**
 
 You can also start the workflow manually from **Actions → GitHub Pages → Run workflow**, selecting the default branch.
 

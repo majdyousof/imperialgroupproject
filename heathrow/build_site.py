@@ -51,7 +51,7 @@ def browser_config() -> dict:
 def build(base_path: str) -> Path:
     """Validate and stage the site before replacing the last successful build."""
     if not re.fullmatch(r"/[A-Za-z0-9_./-]*", base_path) or ".." in base_path.split("/"):
-        raise ValueError("Use a local URL path, such as /imperialgroupproject/.")
+        raise ValueError("Use a local URL path, such as /heathrow-surface-access/.")
     base_path = "/" + base_path.strip("/") + "/" if base_path.strip("/") else "/"
     config = browser_config()
     files: set[Path] = set()
@@ -110,7 +110,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--base-path",
-        default="/imperialgroupproject/",
+        default="/heathrow-surface-access/",
         help="Published URL path for subpage refreshes (use / for a local preview).",
     )
     build(parser.parse_args().base_path)
