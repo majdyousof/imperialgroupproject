@@ -15,7 +15,7 @@ def main() -> None:
     st.image(
         str(IMAGES / "proposed-network.jpg"),
         caption="Final routes for trolleybus and train routes",
-        use_column_width=True,
+        width=1124,
     )
 
     st.subheader("Final Summary of Links and Modes")
