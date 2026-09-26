@@ -2,3 +2,11 @@
 /testing_od
 /myenv
 /Majd/apikey.txt
+.venv/
+__pycache__/
+.ruff_cache/
+.env
+.streamlit/secrets.toml
+dist/
+node_modules/
+.site-build-*/
