@@ -17,7 +17,7 @@ jobs:
       - name: Build static dashboard
         env:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
-        run: python3 -m heathrow.build_site --base-path "/heathrow-surface-access/"
+        run: python3 -m heathrow.build_site --base-path "/${REPOSITORY_NAME}/"
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
